@@ -21,7 +21,7 @@ module.exports.updateUser = async(req, res) => {
         return res.status(400).send("ID unknown : " + req.params.id);
 
     try {
-        const result = await UserModel.findOneAndUpdate({
+        await UserModel.findOneAndUpdate({
                 _id: req.params.id
             }, {
                 $set: {
@@ -36,7 +36,7 @@ module.exports.updateUser = async(req, res) => {
 
             // }
         );
-        return res.send(result);
+
     } catch (err) {
         return res.status(500).json({ message: err });
     }
@@ -47,7 +47,7 @@ module.exports.deleteUser = async(req, res) => {
         return res.status(400).send("ID unknown : " + req.params.id);
 
     try {
-        await UserModel.deleteOne({ _id: req.params.id });
+        await UserModel.remove({ _id: req.params.id }).exec();
         res.status(200).json({ message: "Successfully deleted. " });
     } catch (err) {
         return res.status(500).json({ message: err });
