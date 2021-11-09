@@ -55,7 +55,7 @@ module.exports.deleteUser = async(req, res) => {
 };
 
 module.exports.follow = async(req, res) => {
-    let result1, result2;
+    const result1, result2;
     if (!ObjectID.isValid(req.params.id) ||
         !ObjectID.isValid(req.body.idToFollow)
     )
@@ -76,10 +76,7 @@ module.exports.follow = async(req, res) => {
         result2 = await UserModel.findByIdAndUpdate(
             req.body.idToFollow, { $addToSet: { followers: req.params.id } }, { new: true, upsert: true },
         );
-        return res.status(201).send({
-            result1,
-            result2
-        });
+        return res.send(result1, result2);
     } catch (err) {
         return res.status(500).json({ message: err });
     }

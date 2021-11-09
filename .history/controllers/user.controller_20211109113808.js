@@ -55,14 +55,14 @@ module.exports.deleteUser = async(req, res) => {
 };
 
 module.exports.follow = async(req, res) => {
-    let result1, result2;
+    const result1
     if (!ObjectID.isValid(req.params.id) ||
         !ObjectID.isValid(req.body.idToFollow)
     )
         return res.status(400).send("ID unknown : " + req.params.id);
     try {
         // add to the follower list
-        result1 = await UserModel.findByIdAndUpdate(
+        const result1 = await UserModel.findByIdAndUpdate(
             req.params.id, { $addToSet: { following: req.body.idToFollow } }, { new: true, upsert: true },
 
         );
@@ -73,13 +73,10 @@ module.exports.follow = async(req, res) => {
 
     try {
         // add to following list
-        result2 = await UserModel.findByIdAndUpdate(
+        const result2 = await UserModel.findByIdAndUpdate(
             req.body.idToFollow, { $addToSet: { followers: req.params.id } }, { new: true, upsert: true },
         );
-        return res.status(201).send({
-            result1,
-            result2
-        });
+        return res.send(result1, result2);
     } catch (err) {
         return res.status(500).json({ message: err });
     }

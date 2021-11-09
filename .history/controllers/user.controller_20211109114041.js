@@ -76,10 +76,7 @@ module.exports.follow = async(req, res) => {
         result2 = await UserModel.findByIdAndUpdate(
             req.body.idToFollow, { $addToSet: { followers: req.params.id } }, { new: true, upsert: true },
         );
-        return res.status(201).send({
-            result1,
-            result2
-        });
+        return res.status(201).send(result1, result2);
     } catch (err) {
         return res.status(500).json({ message: err });
     }

@@ -55,33 +55,29 @@ module.exports.deleteUser = async(req, res) => {
 };
 
 module.exports.follow = async(req, res) => {
-    let result1, result2;
     if (!ObjectID.isValid(req.params.id) ||
         !ObjectID.isValid(req.body.idToFollow)
     )
         return res.status(400).send("ID unknown : " + req.params.id);
+
     try {
         // add to the follower list
-        result1 = await UserModel.findByIdAndUpdate(
+        const resulawait UserModel.findByIdAndUpdate(
             req.params.id, { $addToSet: { following: req.body.idToFollow } }, { new: true, upsert: true },
-
+            (err, docs) => {
+                if (!err) res.status(201).json(docs);
+                else return res.status(400).json(err);
+            }
         );
-        //return res.send(result1);
-    } catch (err) {
-        return res.status(500).json({ message: err });
-    }
-
-    try {
         // add to following list
-        result2 = await UserModel.findByIdAndUpdate(
+        await UserModel.findByIdAndUpdate(
             req.body.idToFollow, { $addToSet: { followers: req.params.id } }, { new: true, upsert: true },
+            (err, docs) => {
+                // if (!err) res.status(201).json(docs);
+                if (err) return res.status(400).json(err);
+            }
         );
-        return res.status(201).send({
-            result1,
-            result2
-        });
     } catch (err) {
         return res.status(500).json({ message: err });
     }
-
 };

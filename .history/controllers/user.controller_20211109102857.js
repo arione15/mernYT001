@@ -27,7 +27,7 @@ module.exports.updateUser = async(req, res) => {
                 $set: {
                     bio: req.body.bio
                 }
-            }, { new: true, upsert: true, setDefaultsOnInsert: true }, // upsert - if true and no records match the query, insert update as a new record
+            }, { new: true, upsert: true, setDefaultsOnInsert: true } // upsert - if true and no records match the query, insert update as a new record
             // (err, docs) => {
             //     if (!err)
             //         return res.send(docs);
@@ -55,33 +55,31 @@ module.exports.deleteUser = async(req, res) => {
 };
 
 module.exports.follow = async(req, res) => {
-    let result1, result2;
     if (!ObjectID.isValid(req.params.id) ||
         !ObjectID.isValid(req.body.idToFollow)
     )
         return res.status(400).send("ID unknown : " + req.params.id);
+
     try {
         // add to the follower list
-        result1 = await UserModel.findByIdAndUpdate(
+        const result = await UserModel.findByIdAndUpdate(
             req.params.id, { $addToSet: { following: req.body.idToFollow } }, { new: true, upsert: true },
-
+            // (err, docs) => {
+            //     if (!err) res.status(201).json(docs);
+            //     else return res.status(400).json(err);
+            // }
         );
-        //return res.send(result1);
-    } catch (err) {
-        return res.status(500).json({ message: err });
-    }
-
-    try {
+        return res.send(result);
         // add to following list
-        result2 = await UserModel.findByIdAndUpdate(
+        const result2 = await UserModel.findByIdAndUpdate(
             req.body.idToFollow, { $addToSet: { followers: req.params.id } }, { new: true, upsert: true },
+            // (err, docs) => {
+            //     // if (!err) res.status(201).json(docs);
+            //     if (err) return res.status(400).json(err);
+            // }
         );
-        return res.status(201).send({
-            result1,
-            result2
-        });
+        return res.send(result2);
     } catch (err) {
         return res.status(500).json({ message: err });
     }
-
 };

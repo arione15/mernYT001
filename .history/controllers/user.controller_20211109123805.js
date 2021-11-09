@@ -55,7 +55,8 @@ module.exports.deleteUser = async(req, res) => {
 };
 
 module.exports.follow = async(req, res) => {
-    let result1, result2;
+    const result1 = 0,
+        result2 = 0;
     if (!ObjectID.isValid(req.params.id) ||
         !ObjectID.isValid(req.body.idToFollow)
     )
