@@ -97,14 +97,15 @@ module.exports.unfollow = async(req, res) => {
             req.params.id, { $pull: { following: req.body.idToUnFollow } }, { new: true, upsert: true },
 
         );
+        //return res.send(result1);
     } catch (err) {
         return res.status(500).json({ message: err });
     }
 
     try {
-        // pull from following list
+        // add to following list
         result2 = await UserModel.findByIdAndUpdate(
-            req.body.idToUnFollow, { $pull: { followers: req.params.id } }, { new: true, upsert: true },
+            req.body.idToFollow, { $addToSet: { followers: req.params.id } }, { new: true, upsert: true },
         );
         return res.status(201).send({
             result1,
