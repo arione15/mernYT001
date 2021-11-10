@@ -17,7 +17,6 @@ module.exports.signUpErrors = (err) => {
 
     return errors;
 };
-
 module.exports.signInErrors = (err) => {
     let errors = { email: '', password: '' }
 
