@@ -1,6 +1,6 @@
 const express = require('express');
 const userRoutes = require('./routes/user.routes');
-const postRoutes = require('./routes/post.routes');
+const Routes = require('./routes/user.routes');
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
 const { checkUser, requireAuth } = require('./middlewares/auth.middleware');
@@ -27,7 +27,6 @@ app.get('/jwtid', requireAuth, (req, res) => {
 
 // routes
 app.use('/api/user', userRoutes);
-app.use('/api/post', postRoutes);
 
 
 // server
