@@ -123,10 +123,7 @@ module.exports.unlikePost = async(req, res) => {
                 $pull: { likes: req.params.id },
             }, { new: true },
         );
-        return res.status(201).send({
-            result1,
-            result2
-        });
+
     } catch (err) {
         return res.status(400).send(err);
     }
