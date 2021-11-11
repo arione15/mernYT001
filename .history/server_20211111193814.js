@@ -22,6 +22,7 @@ const corsOptions = {
 }
 app.use(cors(corsOptions));
 
+
 // définir la fonction json de express comme middleware global pour l'application
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

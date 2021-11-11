@@ -12,15 +12,9 @@ require('./config/db');
 const app = express();
 
 // middleware pour gérer le CORS Cross Origin Resource Sharing (ajoute des headers à l'objet response qui permet à des requetes de différentes rigines de communiquer entre elles)
-const corsOptions = {
-    origin: process.env.CLIENT_URL,
-    credentials: true,
-    'allowedHeaders': ['sessionId', 'Content-Type'],
-    'exposedHeaders': ['sessionId'],
-    'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    'preflightContinue': false
-}
-app.use(cors(corsOptions));
+
+
+app.use(cors());
 
 // définir la fonction json de express comme middleware global pour l'application
 app.use(express.urlencoded({ extended: true }));
