@@ -17,36 +17,36 @@ module.exports.readPosts = (req, res) => {
 };
 
 module.exports.createPost = async(req, res) => {
-    let fileName;
+    // let fileName;
 
-    if (req.file !== null) {
-        try {
-            if (
-                req.file.detectedMimeType != "image/jpg" &&
-                req.file.detectedMimeType != "image/png" &&
-                req.file.detectedMimeType != "image/jpeg"
-            )
-                throw Error("invalid file");
+    // if (req.file !== null) {
+    //     try {
+    //         if (
+    //             req.file.detectedMimeType != "image/jpg" &&
+    //             req.file.detectedMimeType != "image/png" &&
+    //             req.file.detectedMimeType != "image/jpeg"
+    //         )
+    //             throw Error("invalid file");
 
-            if (req.file.size > 500000) throw Error("max size");
-        } catch (err) {
-            const errors = uploadErrors(err);
-            return res.status(201).json({ errors });
-        }
-        fileName = req.body.posterId + Date.now() + ".jpg"; // pour avoir un nom unique d el'image
+    //         if (req.file.size > 500000) throw Error("max size");
+    //     } catch (err) {
+    //         const errors = uploadErrors(err);
+    //         return res.status(201).json({ errors });
+    //     }
+    //     fileName = req.body.posterId + Date.now() + ".jpg"; // pour avoir un nom unique d el'image
 
-        await pipeline(
-            req.file.stream,
-            fs.createWriteStream(
-                `${__dirname}/../client/public/uploads/posts/${fileName}`
-            )
-        );
-    }
+    //     await pipeline(
+    //         req.file.stream,
+    //         fs.createWriteStream(
+    //             `${__dirname}/../client/public/uploads/posts/${fileName}`
+    //         )
+    //     );
+    // }
 
     const newPost = new PostModel({
         posterId: req.body.posterId,
         message: req.body.message,
-        picture: req.file !== null ? "./uploads/posts/" + fileName : "",
+        //picture: req.file !== null ? "./uploads/posts/" + fileName : "",
         video: req.body.video,
         likers: [],
         comments: [],
