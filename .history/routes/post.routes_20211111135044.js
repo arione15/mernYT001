@@ -10,7 +10,7 @@ router.patch('/unlike-post/:id', postController.unlikePost);
 
 // comments
 router.patch('/comment-post/:id', postController.commentPost);
-router.patch('/edit-comment-post/:id', postController.editCommentPost);
+router.patch('/comment-post/:id', postController.commentPost);
 
 
 module.exports = router;
