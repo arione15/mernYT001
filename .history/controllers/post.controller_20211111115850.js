@@ -82,27 +82,26 @@ module.exports.deletePost = (req, res) => {
 };
 
 module.exports.likePost = async(req, res) => {
-    let result1, result2;
-    if (!ObjectID.isValid(req.params.id))
-        return res.status(400).send("ID unknown : " + req.params.id);
+        let result1, result2;
+        if (!ObjectID.isValid(req.params.id))
+            return res.status(400).send("ID unknown : " + req.params.id);
 
-    try {
-        result1 = await PostModel.findByIdAndUpdate(
-            req.params.id, {
-                $addToSet: { likers: req.body.id },
-            }, { new: true }
-        );
+        try {
+            result1 = await PostModel.findByIdAndUpdate(
+                req.params.id, {
+                    $addToSet: { likers: req.body.id },
+                }, { new: true }
+            );
+            return res.status(400).send(err);
+            try {
+                catch (err) {}
+                result2 = await UserModel.findByIdAndUpdate(
+                    req.body.id, {
+                        $addToSet: { likes: req.params.id },
+                    }, { new: true }
+                );
 
-        result2 = await UserModel.findByIdAndUpdate(
-            req.body.id, {
-                $addToSet: { likes: req.params.id },
-            }, { new: true }
-        );
-        return res.status(201).send({
-            result1,
-            result2
-        });
-    } catch (err) {
-        return res.status(400).send(err);
-    }
-};
+            } catch (err) {
+                return res.status(400).send(err);
+            }
+        };

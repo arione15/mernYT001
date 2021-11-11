@@ -92,17 +92,16 @@ module.exports.likePost = async(req, res) => {
                 $addToSet: { likers: req.body.id },
             }, { new: true }
         );
-
         result2 = await UserModel.findByIdAndUpdate(
             req.body.id, {
                 $addToSet: { likes: req.params.id },
             }, { new: true }
         );
-        return res.status(201).send({
-            result1,
-            result2
-        });
+
     } catch (err) {
         return res.status(400).send(err);
     }
+} catch (err) {
+    return res.status(400).send(err);
+}
 };
