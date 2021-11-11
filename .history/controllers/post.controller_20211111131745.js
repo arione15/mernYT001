@@ -131,30 +131,3 @@ module.exports.unlikePost = async(req, res) => {
         return res.status(400).send(err);
     }
 };
-
-// comments
-module.exports.commentPost = (req, res) => {
-    if (!ObjectID.isValid(req.params.id))
-        return res.status(400).send("ID unknown : " + req.params.id);
-
-    try {
-        return PostModel.findByIdAndUpdate(
-            req.params.id, {
-                $push: {
-                    comments: {
-                        commenterId: req.body.commenterId,
-                        commenterPseudo: req.body.commenterPseudo,
-                        text: req.body.text,
-                        timestamp: new Date().getTime(),
-                    },
-                },
-            }, { new: true },
-            (err, docs) => {
-                if (!err) return res.send(docs);
-                else return res.status(400).send(err);
-            }
-        );
-    } catch (err) {
-        return res.status(400).send(err);
-    }
-};

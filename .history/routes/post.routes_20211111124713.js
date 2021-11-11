@@ -9,7 +9,7 @@ router.patch('/like-post/:id', postController.likePost);
 router.patch('/unlike-post/:id', postController.unlikePost);
 
 // comments
-router.patch('/comment-post/:id', postController.commentPost);
+router.patch('/unlike-post/:id', postController.unlikePost);
 
 
 module.exports = router;
